@@ -1,6 +1,7 @@
 import numpy
 import pandas
 
+
 def normalize_features(array):
    """
    Normalize the features in our data set.
@@ -39,9 +40,19 @@ def gradient_descent(features, values, theta, alpha, num_iterations):
         predicted_values = numpy.dot(features, theta)
         theta = theta + (1.0*alpha/m)*numpy.dot(values - predicted_values,features)
         cost = compute_cost(features, values, theta)
-       
         cost_history.append(cost)
 
     return theta, pandas.Series(cost_history) 
+
+
+
+if __name__ == "__main__":
+    data = pandas.read_csv("../files/baseball_data.csv")
+    features = data[['height', 'weight']]
+    values = data[['HR']]
+    m = len(values)
+
+    features, mu, sigma = normalize_features(features)
+    gradient_descent(features, values, theta,.01, 1000)
 
 
