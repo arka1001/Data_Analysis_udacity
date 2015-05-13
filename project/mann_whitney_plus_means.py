@@ -36,3 +36,4 @@ def mann_whitney_plus_means(turnstile_weather):
     U, p = scipy.stats.mannwhitneyu(with_rain,without_rain)
     
     return with_rain_mean, without_rain_mean, U, p 
+
