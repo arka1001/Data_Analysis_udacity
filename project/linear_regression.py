@@ -157,3 +157,56 @@ def plot_cost_history(alpha, cost_history):
       geom_point() + ggtitle('Cost History for alpha = %.3f' % alpha )
 
 
+
+def plot_residuals(turnstile_weather, predictions):
+    '''
+    makes a histogram of the residuals, the difference between the original
+    hourly entry data and the predicted values)
+    '''
+
+    plt.figure()
+    (turnstile_weather['ENTRIESn_hourly'] - predictions).hist(bins=150)
+    plt.suptitle('Residual histogram')
+    plt.xlabel('Residuals')
+    plt.ylabel('Frequency')
+    return plt
+
+
+
+def compute_r_squared(data, predictions):
+    '''
+    Calculate R square -- the coefficient of determination. The closer to one,
+    the better the model.
+    Given a list of original data points, and also a list of predicted data
+    points, write a function that will compute and return the coefficient of
+    determination (R^2) for this data.  numpy.mean() and numpy.sum() might both
+    be useful here, but not necessary.
+    Documentation about numpy.mean() and numpy.sum() below:
+    http://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html
+    http://docs.scipy.org/doc/numpy/reference/generated/numpy.sum.html
+    '''
+
+    r_squared = 1-(np.sum(np.square(data-predictions)))/\
+                np.sum(np.square(data-np.mean(data)))
+
+    return r_squared
+
+
+
+if __name__ == '__main__':
+    filename = 'turnstile_data_master_with_weather.csv'
+    df = pandas.DataFrame.from_csv(filename)
+
+
+    print "Linear regression predictions via gradient descent:"
+    predicted, plot = predictions(df)
+    print plot
+    raw_input("Press enter to continue...")
+
+    print "Plotting residuals:"
+    plot_residuals(df, predicted)
+    plt.show()
+    raw_input("Press enter to continue...")
+
+    print "R-squared value:"
+    print compute_r_squared(df['ENTRIESn_hourly'], predicted)
